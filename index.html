@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Imitación de Escala Musical</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        #message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #score {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        #first-note {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+        }
+        #instructions, #practice-container {
+            display: none;
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .note-button {
+            font-size: 24px;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+        }
+        #game-buttons {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+        #game-buttons button {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container" role="main">
+        <h1 id="message">Bienvenido al Juego de Imitación de Escala Musical</h1>
+        <div id="score" aria-live="polite">Puntuación: 0</div>
+        <div id="first-note" aria-live="assertive"></div>
+        <div>
+            <button id="instructions-button" aria-expanded="false">Ver Instrucciones</button>
+        </div>
+        <div id="instructions" aria-labelledby="instructions-button">
+            <h2>Cómo jugar:</h2>
+            <ol>
+                <li>Haz clic en "Iniciar Juego" para comenzar.</li>
+                <li>Escucha atentamente la secuencia de 3 notas musicales.</li>
+                <li>Después de la secuencia, escucharás y verás con qué número comienza la secuencia.</li>
+                <li>Repite la secuencia completa usando las teclas numéricas del 1 al 8:
+                    <ul>
+                        <li>1-8: Notas de la escala mayor (Do a Do')</li>
+                    </ul>
+                </li>
+                <li>Si aciertas, ganas 1 punto. Si fallas, pierdes 1 punto (mínimo 0).</li>
+                <li>El juego continuará automáticamente con una nueva secuencia después de cada intento.</li>
+            </ol>
+            <p>¡Diviértete y entrena tu oído musical!</p>
+        </div>
+        <div>
+            <button id="practice-button">Modo Práctica</button>
+        </div>
+        <div>
+            <button id="start-button">Iniciar Juego</button>
+        </div>
+        <div id="practice-container" aria-labelledby="practice-button">
+            <p>Este es el modo práctica. Usa los botones numéricos o las teclas del 1 al 8 para familiarizarte con las notas de la escala mayor. Cuando estés listo, sal del modo práctica para comenzar el juego.</p>
+            <div id="note-buttons" role="group" aria-label="Botones de notas musicales">
+                <!-- Los botones se generarán dinámicamente aquí -->
+            </div>
+            <div>
+                <button id="exit-practice">Salir del Modo Práctica</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-buttons" style="display: none;">
+        <div>
+            <button id="game-instructions-button">Instrucciones</button>
+        </div>
+        <div>
+            <button id="game-practice-button">Práctica</button>
+        </div>
+    </div>
+
+    <script>
+        const sounds = Array.from({length: 8}, (_, i) => new Audio(`sounds/${i + 1}.wav`));
+
+        const messageElement = document.getElementById('message');
+        const scoreElement = document.getElementById('score');
+        const firstNoteElement = document.getElementById('first-note');
+        const startButton = document.getElementById('start-button');
+        const instructionsButton = document.getElementById('instructions-button');
+        const instructionsElement = document.getElementById('instructions');
+        const practiceButton = document.getElementById('practice-button');
+        const practiceContainer = document.getElementById('practice-container');
+        const exitPracticeButton = document.getElementById('exit-practice');
+        const gameButtons = document.getElementById('game-buttons');
+        const gameInstructionsButton = document.getElementById('game-instructions-button');
+        const gamePracticeButton = document.getElementById('game-practice-button');
+        const noteButtonsContainer = document.getElementById('note-buttons');
+
+        let sequence = [];
+        let playerSequence = [];
+        let score = 0;
+        let isPlaying = false;
+        let inputEnabled = false;
+
+        // Create note buttons
+        for (let i = 1; i <= 8; i++) {
+            const buttonContainer = document.createElement('div');
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.className = 'note-button';
+            button.setAttribute('data-note', i - 1);
+            button.setAttribute('aria-label', `Nota ${i}`);
+            buttonContainer.appendChild(button);
+            noteButtonsContainer.appendChild(buttonContainer);
+        }
+
+        startButton.addEventListener('click', startGame);
+        instructionsButton.addEventListener('click', toggleInstructions);
+        practiceButton.addEventListener('click', startPracticeMode);
+        exitPracticeButton.addEventListener('click', exitPracticeMode);
+        gameInstructionsButton.addEventListener('click', toggleInstructions);
+        gamePracticeButton.addEventListener('click', startPracticeMode);
+
+        function handleNoteInput(note) {
+            if (inputEnabled) {
+                playSound(note);
+                if (isPlaying) {
+                    playerSequence.push(note);
+                    if (playerSequence.length === sequence.length) {
+                        inputEnabled = false;
+                        checkSequence();
+                    }
+                }
+            }
+        }
+
+        document.querySelectorAll('.note-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const note = parseInt(button.getAttribute('data-note'));
+                handleNoteInput(note);
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            if (key >= '1' && key <= '8') {
+                const note = parseInt(key) - 1;
+                handleNoteInput(note);
+            }
+        });
+
+        function toggleInstructions() {
+            const isVisible = instructionsElement.style.display !== 'none';
+            instructionsElement.style.display = isVisible ? 'none' : 'block';
+            instructionsButton.textContent = isVisible ? 'Ver Instrucciones' : 'Ocultar Instrucciones';
+            instructionsButton.setAttribute('aria-expanded', !isVisible);
+        }
+
+        function startPracticeMode() {
+            messageElement.textContent = 'Modo Práctica';
+            scoreElement.style.display = 'none';
+            firstNoteElement.style.display = 'none';
+            startButton.style.display = 'none';
+            instructionsButton.style.display = 'none';
+            practiceButton.style.display = 'none';
+            practiceContainer.style.display = 'block';
+            gameButtons.style.display = 'none';
+            isPlaying = false;
+            inputEnabled = true;
+        }
+
+        function exitPracticeMode() {
+            messageElement.textContent = 'Bienvenido al Juego de Imitación de Escala Musical';
+            scoreElement.style.display = 'block';
+            firstNoteElement.style.display = 'none';
+            startButton.style.display = 'inline-block';
+            instructionsButton.style.display = 'inline-block';
+            practiceButton.style.display = 'inline-block';
+            practiceContainer.style.display = 'none';
+            if (isPlaying) {
+                gameButtons.style.display = 'block';
+            }
+            inputEnabled = false;
+        }
+
+        function startGame() {
+            if (!isPlaying) {
+                isPlaying = true;
+                inputEnabled = false;
+                startButton.style.display = 'none';
+                instructionsButton.style.display = 'none';
+                instructionsElement.style.display = 'none';
+                practiceButton.style.display = 'none';
+                gameButtons.style.display = 'block';
+                score = 0;
+                scoreElement.textContent = `Puntuación: ${score}`;
+                nextRound();
+            }
+        }
+
+        function nextRound() {
+            inputEnabled = false;
+            firstNoteElement.style.display = 'none';
+            generateSequence();
+            setTimeout(() => {
+                playSequence();
+            }, 1000);
+        }
+
+        function generateSequence() {
+            sequence = Array.from({length: 3}, () => Math.floor(Math.random() * 8));
+        }
+
+        function playSequence() {
+            messageElement.textContent = 'Escucha la secuencia';
+            let i = 0;
+            const interval = setInterval(() => {
+                playSound(sequence[i]);
+                i++;
+                if (i >= sequence.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        announceFirstNote();
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        function announceFirstNote() {
+            const firstNote = sequence[0] + 1;
+            const message = `Comienza con: ${firstNote}`;
+            firstNoteElement.textContent = message;
+            firstNoteElement.style.display = 'block';
+            
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.8;
+            
+            speechSynthesis.cancel();
+            
+            utterance.onend = function() {
+                setTimeout(() => {
+                    messageElement.textContent = 'Repite la secuencia (usa las teclas numéricas del 1 al 8)';
+                    playerSequence = [];
+                    inputEnabled = true;
+                }, 500);
+            };
+
+            speechSynthesis.speak(utterance);
+        }
+
+        function playSound(index) {
+            sounds[index].currentTime = 0;
+            sounds[index].play().catch(e => console.error("Error al reproducir el sonido:", e));
+        }
+
+        function checkSequence() {
+            if (JSON.stringify(playerSequence) === JSON.stringify(sequence)) {
+                score++;
+                messageElement.textContent = '¡Correcto!';
+            } else {
+                score = Math.max(0, score - 1);
+                messageElement.textContent = 'Incorrecto. Prepárate para la siguiente secuencia.';
+            }
+            scoreElement.textContent = `Puntuación: ${score}`;
+            setTimeout(nextRound, 2000);
+        }
+    </script>
+</body>
+</html>
