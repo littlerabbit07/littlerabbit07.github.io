@@ -1,0 +1,99 @@
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.profile-pic {
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.dark-mode .cv-header {
+  background-color: #1e1e1e;
+}
+
+h1, h3 {
+  color: #0066cc;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.dark-mode h1, .dark-mode h3 {
+  color: #0066cc;
+}
+
+.section-title {
+  border-bottom: 2px solid #0066cc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.dark-mode .section-title {
+  border-color: #003e7c;
+}
+
+a {
+  color: #0066cc;
+}
+
+.dark-mode a {
+  color: #66b2ff;
+}
+
+.cv-header {
+  background-color: #f0f8ff;
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.info-label {
+  font-weight: bold;
+}
+
+.row > div {
+  margin-bottom: 10px;
+}
+
+.toggle-btn {
+  position: fixed; /* Change from absolute to fixed */
+  top: 20px;       /* Keep the top margin */
+  right: 30px;     /* Keep the right margin */
+  z-index: 1000;   /* Ensure it stays above other elements */
+}
+
+.btn-theme {
+  border: none;
+  padding: 6px 14px;
+  background-color: #0066cc;
+  color: white;
+  border-radius: 5px;
+}
+
+.dark-mode .btn-theme {
+  background-color: #00274e;
+  color: #ffffff;
+}
+
+@media print {
+  .toggle-btn, /* Hides the entire toggle button container */
+  .btn-theme,  /* Hides the theme toggle button */
+  .btn-lang,   /* Hides the language toggle button */
+  .btn-primary { /* Hides the download PDF button */
+    display: none;
+  }
+}
