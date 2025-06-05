@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerónimo Ríos Pisoni - CV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="toggle-btn d-flex justify-content-between">
+    <button class="btn-theme" onclick="toggleTheme()">🌙 Modo Noche</button>
+    <button class="btn-lang" onclick="toggleLanguage()">🌐 Cambiar Idioma</button>
+    <button class="btn btn-primary" onclick="window.location.href='Gerónimo Ríos Pisoni - CV.pdf'" download>📄 Descargar PDF</button>
+  </div>
+
+  <div class="container py-5">
+    
+    <div class="cv-header d-flex align-items-center">
+        <img src="Img/profile_picture.png" alt="Profile Picture" class="profile-pic rounded-circle me-4" width="110">
+        <div>
+          <h1 data-lang="es">Gerónimo Ríos Pisoni</h1>
+          <h1 data-lang="en" style="display: none;">Gerónimo Ríos Pisoni</h1>
+          <h5 data-lang="es">Estudiante en Analista en Sistemas</h5>
+          <h5 data-lang="en" style="display: none;">Systems Analyst Student</h5>
+          <p>
+            <span class="info-label" data-lang="es">Email:</span>
+            <span class="info-label" data-lang="en" style="display: none;">Email:</span>
+            <a href="mailto:geronimo.rios.pisoni@gmail.com" target="_blank" rel="noopener noreferrer">geronimo.rios.pisoni@gmail.com</a><br>
+            <span class="info-label" data-lang="es">WhatsApp:</span>
+            <span class="info-label" data-lang="en" style="display: none;">WhatsApp:</span>
+            <a href="https://wa.me/2944594057" target="_blank" rel="noopener noreferrer">2944594057</a><br>
+            <span class="info-label" data-lang="es">Edad:</span>
+            <span class="info-label" data-lang="en" style="display: none;">Age:</span> 33<br>
+            <span class="info-label" data-lang="es">Domicilio:</span>
+            <span class="info-label" data-lang="en" style="display: none;">Address:</span>
+            <a href="https://maps.app.goo.gl/mLVSpg43jFqqwWih8" target="_blank" rel="noopener noreferrer">Saavedra 2986, El Bolsón, Río Negro</a>
+          </p>
+        </div>
+      </div>
+
+    <div class="mb-5">
+      <h3 class="section-title" data-lang="es">Extracto Profesional</h3>
+      <h3 class="section-title" data-lang="en" style="display: none;">Professional Summary</h3>
+      <ul>
+        <li data-lang="es">Soporte técnico en plataformas Windows y Linux</li>
+        <li data-lang="en" style="display: none;">Technical support on Windows and Linux platforms</li>
+        <li data-lang="es">Capacidad para resolver problemas técnicos utilizando herramientas tecnológicas y métodos de troubleshooting</li>
+        <li data-lang="en" style="display: none;">Skilled in resolving technical problems through the use of diagnostic tools and troubleshooting techniques</li>
+        <li data-lang="es">Habilidad en la búsqueda, análisis y recopilación de información técnica en medios digitales para la solución de inconvenientes y optimización de recursos.</li>
+        <li data-lang="en" style="display: none;">Skilled in researching, analyzing, and gathering technical information from digital sources to solve issues and optimize resources.</li>
+      </ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 class="section-title" data-lang="es">Formación Académica</h3>
+      <h3 class="section-title" data-lang="en" style="display: none;">Academic Background</h3>
+      <ul>
+        <li data-lang="es"><strong>Secundario:</strong> Perito Mercantil con orientación en Computación (2009)</li>
+        <li data-lang="en" style="display: none;"><strong>High School:</strong> Business Expert with a focus on Computing (2009)</li>
+        <li data-lang="es"><strong>Instituto Inglés:</strong> 6 Años Completo (2009)</li>
+        <li data-lang="en" style="display: none;"><strong>English Institute:</strong> 6 Years Completed (2009)</li>
+        <li data-lang="es"><strong>Universitario:</strong> Inconcluso - Analista en Sistemas de Información – UTN, La Plata (2010)</li>
+        <li data-lang="en" style="display: none;"><strong>University:</strong> Incomplete - Information Systems Analyst – UTN, La Plata (2010)</li>
+        <li data-lang="es"><strong>Curso:</strong> Redes Cisco – FRLP UTN, La Plata (2017 - 2018)</li>
+        <li data-lang="en" style="display: none;"><strong>Course:</strong> Cisco Networks – FRLP UTN, La Plata (2017 - 2018)</li>
+      </ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 data-lang="es" class="section-title">Conocimientos Técnicos</h3>
+      <h3 data-lang="en" class="section-title" style="display: none;">Technical Skills</h3>
+      <ul class="two-columns">
+        <li data-lang="es">Soporte Técnico Linux, Windows, Android</li>
+        <li data-lang="en" style="display: none;">Technical Support for Linux, Windows, Android</li>
+        <li data-lang="es">Instalación, Diagnóstico y Reparación de Equipos Informáticos</li>
+        <li data-lang="en" style="display: none;">Installation, Diagnosis, and Repair of IT Equipment</li>
+        <li data-lang="es">Montaje y Gestión de Redes LAN/WAN</li>
+        <li data-lang="en" style="display: none;">Setup and Management of LAN/WAN Networks</li>
+        <li data-lang="es">Electricidad Residencial y Componentes Electricos</li>
+        <li data-lang="en" style="display: none;">Residential Electricity and Electrical Components</li>
+        <li data-lang="es">Operación y Edición de Equipos de Grabación y Software Multimedia</li>
+        <li data-lang="en" style="display: none;">Operation and Editing of Recording Equipment and Multimedia Software</li>
+      </ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 class="section-title" data-lang="es">Experiencia Laboral</h3>
+      <h3 class="section-title" data-lang="en" style="display: none;">Work Experience</h3>
+      <ul class="two-columns">
+        <li data-lang="es">Atención a Clientes, Presupuestos,<br> Impresiones en gran formato (Imprenta Digital) 2 años</li>
+        <li data-lang="en" style="display: none;">Customer Service, Budgeting,<br> Large Format Printing (Digital Printing) 2 years</li>
+        <li data-lang="es">Gestión cobros (Rapipago)</li>
+        <li data-lang="en" style="display: none;">Payment Management (Rapipago)</li>
+      </ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 class="section-title" data-lang="es">Otros</h3>
+      <h3 class="section-title" data-lang="en" style="display: none;">Other</h3>
+      <ul>
+        <li data-lang="es">Licencia de conducir: Autos/Motos</li>
+        <li data-lang="en" style="display: none;">Driver's License: Cars/Motorcycles</li>
+      </ul>
+    </div>
+  
+
+  
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      body.classList.toggle('dark-mode');
+
+      // Save preference
+      localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    function toggleLanguage() {
+      const elements = document.querySelectorAll('[data-lang]');
+      elements.forEach(el => {
+        if (el.style.display === 'none') {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      // Toggle language attribute and save preference
+      const currentLang = document.documentElement.lang;
+      const newLang = currentLang === 'es' ? 'en' : 'es';
+      document.documentElement.lang = newLang;
+      localStorage.setItem('language', newLang);
+    }
+
+    window.onload = () => {
+    // Apply saved theme or default to dark mode
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || !savedTheme) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark'); // Save default preference
+    }
+
+    // Apply saved language or default to Spanish
+    const savedLanguage = localStorage.getItem('language') || 'es'; // Default to Spanish
+    document.documentElement.lang = savedLanguage;
+
+    if (savedLanguage === 'en') {
+      toggleLanguage(); // Ensure English is displayed if saved
+    }
+  };
+
+    document.getElementById('download-pdf').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+      const content = document.body;
+
+      pdf.html(content, {
+        callback: function (doc) {
+          doc.save('CV-Gerónimo-Ríos-Pisoni.pdf');
+        },
+        x: 10,
+        y: 10,
+        width: 190
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
