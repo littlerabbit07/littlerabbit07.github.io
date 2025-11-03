@@ -5,6 +5,80 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+.two-column-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.academic-list {
+  flex: 1;
+  min-width: 0;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.framed-image {
+  border: 2px solid #333;
+  padding: 10px;
+  width: 30%;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.framed-image:hover {
+  transform: scale(1.02);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .two-column-layout {
+    flex-direction: column;
+  }
+}
+
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border: 3px solid #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-modal:hover {
+  color: #ccc;
+}
+
 .two-columns {
   columns: 2;
   -webkit-columns: 2;
