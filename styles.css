@@ -4,6 +4,10 @@ body {
   font-family: 'Segoe UI', Roboto, sans-serif;
   transition: background-color 0.3s, color 0.3s;
 }
+.cont {
+  padding-top: 0px;
+  padding-bottom: 3rem; /* Keep bottom padding if needed */
+}
 
 .two-column-layout {
   display: flex;
@@ -39,7 +43,7 @@ body {
 .cv-header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 5px;
 }
 
 .header-content {
@@ -61,7 +65,7 @@ body {
 }
 
 .header-extra-image {
-  max-width: 210px;
+  max-width: 190px;
   height: auto;
   border: 2px solid #333;
   padding: 10px;
@@ -141,7 +145,7 @@ a {
     border: 2px solid #333;
     padding: 5px;
     border-radius: 8px;
-    margin: 10;
+    margin: 10px;
 }
 
 .dark-mode {
@@ -178,7 +182,7 @@ a {
 }
 
 .dark-mode a {
-  color: #66b2ff;
+  color: #66b2ff !important
 }
 
 .cv-header {
@@ -199,11 +203,26 @@ a {
   margin-bottom: 10px;
 }
 
+
 .toggle-btn {
-  position: fixed; /* Change from absolute to fixed */
-  top: 20px;       /* Keep the top margin */
-  right: 30px;     /* Keep the right margin */
-  z-index: 1000;   /* Ensure it stays above other elements */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .toggle-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    top: 10px;
+    margin: 0px 0 0 0;
+    width: 90%;
+    gap: 10px;
+  }
 }
 
 .btn-theme {
