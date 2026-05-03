@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geronimo R. P.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--g:#39ff14;--dim:#1a7a00;--bg:#050e02;--card:#071203;--border:#1f5c0a}
+  html,body{height:100%;background:var(--bg)}
+  body{font-family:'Share Tech Mono',monospace;color:var(--g);background:var(--bg)}
+
+  .crt-wrap{background:var(--bg);position:relative;overflow:hidden;min-height:100vh}
+
+  .scanlines{pointer-events:none;position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);z-index:100}
+  .flicker{pointer-events:none;position:fixed;inset:0;z-index:101;animation:flicker 8s infinite}
+  @keyframes flicker{0%,95%,100%{opacity:1}96%{opacity:.85}97%{opacity:1}98%{opacity:.9}99%{opacity:1}}
+
+  #power-flash{position:fixed;inset:0;background:#39ff14;opacity:0;z-index:200;pointer-events:none}
+
+  #boot-screen{position:fixed;inset:0;background:var(--bg);z-index:150;display:flex;flex-direction:column;justify-content:center;padding:2rem 2.5rem;overflow:hidden}
+  #boot-screen.done{display:none}
+  .boot-line{font-size:13px;color:var(--dim);letter-spacing:0.06em;line-height:2.1;opacity:0}
+  .boot-line.ok::after{content:' [ OK ]';color:var(--g)}
+  .boot-line.visible{opacity:1}
+  #boot-bar-wrap{margin-top:1.25rem;display:none}
+  #boot-bar-label{font-size:11px;color:var(--dim);letter-spacing:0.1em;margin-bottom:6px}
+  #boot-bar-track{width:100%;max-width:480px;height:6px;background:#0a1f05;border:1px solid var(--border);position:relative}
+  #boot-bar-fill{height:100%;width:0;background:var(--g);transition:width 0.08s linear}
+  #boot-pct{font-size:11px;color:var(--g);margin-top:4px;letter-spacing:0.1em}
+
+  .site{opacity:0;transition:opacity 0.6s}
+  .site.visible{opacity:1}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border)}
+  .nav-name{font-size:15px;letter-spacing:.08em;text-shadow:0 0 8px var(--g)}
+  .nav-links{display:flex;gap:1.5rem}
+  .nav-links a{font-size:12px;color:var(--dim);text-decoration:none;cursor:pointer;letter-spacing:.06em;padding:4px 10px;border:1px solid transparent;transition:color .15s,border-color .15s,text-shadow .15s}
+  .nav-links a:hover{color:var(--g);border-color:var(--g);text-shadow:0 0 8px var(--g)}
+
+  .hero{padding:3rem 2rem 2rem;position:relative;max-width:860px}
+  .hero h1{font-size:24px;letter-spacing:.1em;text-shadow:0 0 10px var(--g);margin-bottom:.75rem}
+  .hero p{font-size:13px;color:var(--dim);line-height:1.8;max-width:500px;letter-spacing:.03em}
+
+  .blink{animation:blink 1s step-end infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;padding:0 2rem 3rem;max-width:860px}
+  .card{background:var(--card);border:1px solid var(--border);padding:1.25rem;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s,transform .15s}
+  .card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(57,255,20,.03) 0%,transparent 60%);pointer-events:none}
+  .card:hover{border-color:var(--g);transform:translateY(-2px)}
+  .card:hover .card-title{text-shadow:0 0 10px var(--g)}
+  .card:active{transform:scale(.97) translateY(0)}
+  .card-icon{font-size:13px;margin-bottom:10px;opacity:.85}
+  .card-label{font-size:10px;color:var(--dim);letter-spacing:.12em;margin-bottom:4px}
+  .card-title{font-size:14px;letter-spacing:.06em;margin-bottom:8px;color:var(--g);transition:text-shadow .2s}
+  .card p{font-size:11px;color:var(--dim);line-height:1.8;letter-spacing:.02em}
+  .tag{display:inline-block;font-size:10px;padding:2px 8px;margin-top:10px;letter-spacing:.08em;border:1px solid var(--border);color:var(--dim);transition:border-color .2s,color .2s}
+  .card:hover .tag{border-color:var(--g);color:var(--g)}
+
+  footer{padding:1.25rem 2rem;border-top:1px solid var(--border);font-size:11px;color:var(--dim);letter-spacing:.08em}
+
+  .corner{position:absolute;width:10px;height:10px;border-color:var(--g);border-style:solid}
+  .tl{top:0;left:0;border-width:1px 0 0 1px}
+  .tr{top:0;right:0;border-width:1px 1px 0 0}
+  .bl{bottom:0;left:0;border-width:0 0 1px 1px}
+  .br{bottom:0;right:0;border-width:0 1px 1px 0}
+
+  @media(max-width:600px){
+    nav{flex-direction:column;gap:.75rem;align-items:flex-start}
+    .nav-links{flex-wrap:wrap;gap:.75rem}
+    .hero{padding:2rem 1.25rem 1.5rem}
+    .grid{padding:0 1.25rem 2rem}
+    footer{padding:1rem 1.25rem}
+  }
+</style>
+</head>
+<body>
+<div class="crt-wrap">
+  <div id="power-flash"></div>
+  <div class="scanlines"></div>
+  <div class="flicker"></div>
+
+  <div id="boot-screen">
+    <div id="boot-lines"></div>
+    <div id="boot-bar-wrap">
+      <div id="boot-bar-label">LOADING SYSTEM...</div>
+      <div id="boot-bar-track"><div id="boot-bar-fill"></div></div>
+      <div id="boot-pct">0%</div>
+    </div>
+  </div>
+
+  <div class="site" id="site">
+    <nav>
+      <span class="nav-name">GERONIMO R. P.<span class="blink">_</span></span>
+      <div class="nav-links">
+        <a href="#files">FILES</a>
+        <a href="#pwas">PWAs</a>
+        <a href="#arduino">ARDUINO</a>
+        <a href="#blog">BLOG</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <h1>PROJECTS &amp; EXPERIMENTS<span class="blink">_</span></h1>
+      <p>A collection of personal projects spanning web apps, embedded systems, and self-hosted tools.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card" id="files">
+        <div class="card-icon">[ FS ]</div>
+        <div class="card-label">MODULE 01</div>
+        <div class="card-title">Server container</div>
+        <p>Lightweight containerized file server over HTTP — browse, download, and upload from any browser.</p>
+        <span class="tag">SELF-HOSTED</span>
+      </div>
+      <div class="card" id="pwas">
+        <div class="card-icon">[ SW ]</div>
+        <div class="card-label">MODULE 02</div>
+        <div class="card-title">PWAs</div>
+        <p>HTML/CSS/JS apps with service workers for offline support and manifest for installability. No app stores.</p>
+        <span class="tag">WEB</span>
+      </div>
+      <div class="card" id="arduino">
+        <div class="card-icon">[ CAT ]</div>
+        <div class="card-label">MODULE 03</div>
+        <div class="card-title">Cat feeder</div>
+        <p>Arduino + RTC + SG90 servo. Dispenses food on schedule automatically, even when away.</p>
+        <span class="tag">ARDUINO</span>
+      </div>
+      <div class="card" id="blog">
+        <div class="card-icon">[ WEB ]</div>
+        <div class="card-label">MODULE 04</div>
+        <div class="card-title">Weblogs</div>
+        <p>Flask blog on Linux home server. Gunicorn + Nginx. Fast, customizable, fully under your control.</p>
+        <span class="tag">FLASK</span>
+      </div>
+    </div>
+
+    <footer>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      &gt; BUILT BY GERONIMO R. P. // SYSTEM READY
+    </footer>
+  </div>
+</div>
+
+<script>
+const lines=[
+  {t:"BIOS v2.4.1 — GERONIMO SYSTEMS",ok:false},
+  {t:"Checking RAM................. 512K OK",ok:true},
+  {t:"Initializing display adapter",ok:true},
+  {t:"Mounting filesystem /dev/sda1",ok:true},
+  {t:"Starting network interface eth0",ok:true},
+  {t:"Loading kernel modules",ok:true},
+  {t:"Spawning web server process",ok:true},
+  {t:"Importing project registry",ok:true},
+];
+
+const container=document.getElementById('boot-lines');
+const barWrap=document.getElementById('boot-bar-wrap');
+const barFill=document.getElementById('boot-bar-fill');
+const pct=document.getElementById('boot-pct');
+const bootScreen=document.getElementById('boot-screen');
+const site=document.getElementById('site');
+const flash=document.getElementById('power-flash');
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
+
+async function runBoot(){
+  await delay(120);
+  flash.style.transition='opacity 0.08s';
+  flash.style.opacity='0.9';
+  await delay(80);
+  flash.style.opacity='0';
+  await delay(200);
+
+  for(let i=0;i<lines.length;i++){
+    const d=document.createElement('div');
+    d.className='boot-line'+(lines[i].ok?' ok':'');
+    d.textContent=lines[i].t;
+    container.appendChild(d);
+    await delay(10);
+    d.classList.add('visible');
+    await delay(lines[i].ok?260:320);
+  }
+
+  await delay(200);
+  barWrap.style.display='block';
+  let p=0;
+  while(p<=100){
+    barFill.style.width=p+'%';
+    pct.textContent=p+'%';
+    p+=Math.floor(Math.random()*5)+2;
+    await delay(40);
+  }
+  barFill.style.width='100%';
+  pct.textContent='100%';
+  await delay(300);
+
+  flash.style.transition='opacity 0.06s';
+  flash.style.opacity='0.7';
+  await delay(60);
+  flash.style.opacity='0';
+  await delay(60);
+  flash.style.opacity='0.4';
+  await delay(40);
+  flash.style.opacity='0';
+  await delay(100);
+
+  bootScreen.classList.add('done');
+  site.classList.add('visible');
+}
+
+runBoot();
+</script>
+</body>
+</html>
